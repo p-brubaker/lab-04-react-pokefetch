@@ -4,7 +4,8 @@ class TextInput extends Component {
     render() {
         return (
             <>
-                <input value={this.props.value}></input>
+                <input onChange={this.props.handleChange}></input>
+                <button onClick={this.props.handleSubmit}>Search</button>
             </>
         )
     }

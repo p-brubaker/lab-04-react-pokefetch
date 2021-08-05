@@ -1,22 +1,40 @@
 import './App.css';
 import React, { Component } from 'react';
 import Dropdown from './Components/Dropdown';
-import TextInput from './Components/TextInput';
+import Search from './Components/Search';
 
 class App extends Component {
-    state = {}
+    state = {sortOrder: 'asc', query: 'char'}
+
+    handleChangeSortOrder = (e) => {
+        this.setState(
+            { sortOrder: e.target.value }
+        )
+    }
+
+    handleChangeQuery = (e) => {
+        this.setState(
+            { query: e.target.value }
+        )
+    }
+
+    handleSubmitQuery = () => {
+        console.log(`sort order: ${this.state.sortOrder} query: ${this.state.query}`);
+    } 
 
     render () {
         return (
             <>
             <section className="dropdowns">
-                <TextInput 
+                <Search 
                     label="search"
-                    value="char"
+                    handleChange={this.handleChangeQuery}
+                    handleSubmit={this.handleSubmitQuery}
                 />
                 <Dropdown 
-                    label="direction"
-                    options={['option 1', 'option 2']}
+                    handleChange={this.handleChangeSortOrder}
+                    label="Sort order"
+                    options={['asc', 'desc']}
                 />
             </section>
             <section className="poke-list">
