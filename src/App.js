@@ -5,15 +5,21 @@ import Search from './Components/Search';
 import PokeItem from './Components/PokeItem';
 
 class App extends Component {
-    state = {sortOrder: 'asc', query: '', data: 'undefined', sortBy: 'name'}
+    state = {sortOrder: 'asc', query: 'undefined', data: 'undefined', sortBy: 'pokemon'}
 
     fetchData = async function(query, sortBy, sortOrder) {
+        this.state.data = 'undefined';
         let url = 'https://pokedex-alchemy.herokuapp.com/api/pokedex';
-        url += `?pokemon=${query}&sort=${sortBy}&direction=${sortOrder}`
+        if (this.state.query !== 'undefined') {
+            url += `?pokemon=${query}&sort=${sortBy}&direction=${sortOrder}`;
+        }
         let response = await fetch(url);
         let data = await response.json();
-
         this.setState({data});
+    }
+
+    componentDidMount = () => {
+        this.fetchData();
     }
 
     handleChangeSortOrder = (e) => {
@@ -57,7 +63,7 @@ class App extends Component {
                         handleChange={this.handleChangeSortBy}
                         label='sort by'
                         defaultValue='name'
-                        options={['name', 'type', 'shape', 'ability']}
+                        options={['pokemon', 'type', 'shape', 'ability']}
                     />
                 </section>
 
@@ -76,6 +82,8 @@ class App extends Component {
                     })
                 }
             </section>}
+            {this.state.data === 'undefined' &&
+                <span>fetching pokemon</span>}
             </>
         );
     }
