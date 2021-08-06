@@ -8,7 +8,7 @@ class App extends Component {
     state = {searchBy: 'pokemon', sortOrder: 'asc', query: 'undefined', data: 'undefined', sortBy: 'pokemon'}
 
     fetchData = async function(searchBy, query, sortBy, sortOrder) {
-        this.state.data = 'undefined';
+        this.setState({ data: 'undefined' });
         let url = 'https://pokedex-alchemy.herokuapp.com/api/pokedex';
         if (this.state.query !== 'undefined') {
             url += `?${searchBy}=${query}&sort=${sortBy}&direction=${sortOrder}`;
@@ -27,6 +27,7 @@ class App extends Component {
             { sortOrder: e.target.value }
         )
     }
+
     handleChangeQuery = (e) => {
         this.setState(
             { query: e.target.value }
