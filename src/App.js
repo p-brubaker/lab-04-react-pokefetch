@@ -1,28 +1,94 @@
 import './App.css';
 import React, { Component } from 'react';
 import Dropdown from './Components/Dropdown';
-import TextInput from './Components/TextInput';
+import Search from './Components/Search';
+import PokeList from './Components/PokeList';
 
 class App extends Component {
-    state = {}
+    state = {searchBy: 'pokemon', sortOrder: 'asc', query: 'undefined', data: 'undefined', sortBy: 'pokemon'}
+
+    fetchData = async function(searchBy, query, sortBy, sortOrder) {
+        this.state.data = 'undefined';
+        let url = 'https://pokedex-alchemy.herokuapp.com/api/pokedex';
+        if (this.state.query !== 'undefined') {
+            url += `?${searchBy}=${query}&sort=${sortBy}&direction=${sortOrder}`;
+        }
+        setTimeout(() => {
+            
+        })
+        let response = await fetch(url);
+        let data = await response.json();
+        this.setState({data});
+    }
+
+    componentDidMount = () => {
+        this.fetchData();
+    }
+
+    handleChangeSortOrder = (e) => {
+        this.setState(
+            { sortOrder: e.target.value }
+        )
+    }
+    handleChangeQuery = (e) => {
+        this.setState(
+            { query: e.target.value }
+        ) 
+    }
+
+    handleSubmitSearchQuery = () => {
+        this.fetchData(this.state.searchBy, this.state.query, this.state.sortBy, this.state.sortOrder);    
+    }
+
+    handleChangeSortBy = (e) => {
+        this.setState({ sortBy: e.target.value })
+    }
+
+    handleChangeSearchBy = (e) => {
+        this.setState({searchBy: e.target.value})
+    }
 
     render () {
         return (
-            <>
-            <section className="dropdowns">
-                <TextInput 
-                    label="search"
-                    value="char"
-                />
-                <Dropdown 
-                    label="direction"
-                    options={['option 1', 'option 2']}
-                />
-            </section>
-            <section className="poke-list">
-                map pokeItems here
-            </section>
-            </>
+            <div className="app">
+                <section className="user-input">
+                    <section className="search">
+                        <Search 
+                            label='search'
+                            handleChange={this.handleChangeQuery}
+                            handleSubmit={this.handleSubmitSearchQuery}
+                        />
+                    </section>
+                    <section className="select-options">
+                        <Dropdown 
+                            handleChange={this.handleChangeSortOrder}
+                            label='Sort order'
+                            defaultValue='asc'
+                            options={['asc', 'desc']}
+                        />
+                        <Dropdown
+                            handleChange={this.handleChangeSortBy}
+                            label='sort by'
+                            defaultValue='name'
+                            options={['pokemon', 'type', 'shape', 'ability']}
+                        />
+                        <Dropdown 
+                            handleChange={this.handleChangeSearchBy}
+                            label='search by'
+                            defaultValue='pokemon'
+                            options={['pokemon', 'type', 'ability']} 
+                        />
+
+                    </section>
+                </section>
+
+                {this.state.data !== 'undefined' &&
+                    <PokeList 
+                        results = {this.state.data.results}
+                    />}
+                {this.state.data === 'undefined' &&
+                    <img src='https://cdn.dribbble.com/users/621155/screenshots/2835314/simple_pokeball.gif' alt="pokeball loading spinner" />}
+            </div>
         );
     }
 

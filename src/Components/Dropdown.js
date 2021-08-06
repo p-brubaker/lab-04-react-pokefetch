@@ -8,7 +8,7 @@ class Dropdown extends Component {
         return ( 
             <div className="dropdown">
             <label>{label}</label>
-            <select defaultValue="All" onChange={handleChange}>
+            <select onChange={handleChange}>
                 {options.map((option, i) => {
                 return (
                     <option value={option} key={i}>
