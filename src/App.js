@@ -13,9 +13,6 @@ class App extends Component {
         if (this.state.query !== 'undefined') {
             url += `?${searchBy}=${query}&sort=${sortBy}&direction=${sortOrder}`;
         }
-        setTimeout(() => {
-            
-        })
         let response = await fetch(url);
         let data = await response.json();
         this.setState({data});
