@@ -6,7 +6,7 @@ class PokeDetail extends Component {
 
     loadData = async () => {
         const {pokeId} = this.props.match.params;
-        const url = `https://pokedex-alchemy.herokuapp.com/api/pokedex?id=${pokeId}`;
+        const url = `https://pokedex-alchemy.herokuapp.com/api/pokedex/${pokeId}`;
         const resp = await fetch(url);
         const data = await resp.json();
         this.setState({data});
@@ -17,10 +17,12 @@ class PokeDetail extends Component {
     }
 
     render() {
-        
+        const { data } = this.state;
+
         return (
             <section>
-                <h1>Poke detail page</h1>
+                <h1>{data.pokemon}</h1>
+                <img src={data.url_image} alt="poke" />
             </section>
         )
     }

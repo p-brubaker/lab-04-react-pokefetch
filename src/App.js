@@ -23,3 +23,5 @@ class App extends Component {
 }
 
 export default App;
+
+// http://localhost:3000/pokemon/5ff4fb7cd89993a89cc6544f

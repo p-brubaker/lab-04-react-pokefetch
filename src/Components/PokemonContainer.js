@@ -4,7 +4,13 @@ import Dropdown from './Dropdown';
 import Search from './Search'
 
 class PokemonContainer extends Component {
-    state = {searchBy: 'pokemon', sortOrder: 'asc', query: 'undefined', data: 'undefined', sortBy: 'pokemon'}
+    state = {
+        searchBy: 'pokemon', 
+        sortOrder: 'asc', 
+        query: 'undefined', 
+        data: 'undefined', 
+        sortBy: 'pokemon'
+    }
 
     fetchData = async function(searchBy, query, sortBy, sortOrder) {
         this.setState({ data: 'undefined' });
