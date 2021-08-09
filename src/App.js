@@ -76,10 +76,8 @@ class App extends Component {
                             defaultValue='pokemon'
                             options={['pokemon', 'type', 'ability']} 
                         />
-
                     </section>
                 </section>
-
                 {this.state.data !== 'undefined' &&
                     <PokeList 
                         results = {this.state.data.results}
