@@ -32,22 +32,9 @@ class PokemonContainer extends Component {
         this.setState({ [prop]: e.target.value })
     }
 
-    setPageFirst = () => {
-        this.setState({page: 1}, () => this.fetchData());
+    setPage = (value) => {
+        this.setState({page: value}, () => this.fetchData());
     }
-
-    setPageLast = (numPages) => {
-        this.setState({ page: numPages }, () => this.fetchData());
-    }
-
-    nextPage = () => {
-        this.setState({ page: this.state.page + 1 }, () => this.fetchData());
-    }
-
-    prevPage = () => {
-        this.setState({ page: this.state.page - 1 }, () => this.fetchData());
-    }
-
 
     render () {
         return (
@@ -90,10 +77,7 @@ class PokemonContainer extends Component {
                         count={this.state.data.count}
                         page={this.state.page}
                         perPage={this.state.data.perPage}
-                        setPageFirst={this.setPageFirst}
-                        setPageLast={this.setPageLast}
-                        nextPage={this.nextPage}
-                        prevPage={this.prevPage}
+                        setPage={this.setPage}
                     />
                     </>}
                 {this.state.data.length === 0 &&
