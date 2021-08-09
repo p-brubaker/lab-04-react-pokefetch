@@ -1,23 +1,24 @@
 import { Component } from 'react';
 import PokeList from './PokeList';
 import Dropdown from './Dropdown';
-import Search from './Search'
+import Search from './Search';
+import Paginator from './Paginator';
 
 class PokemonContainer extends Component {
     state = {
         searchBy: 'pokemon', 
         sortOrder: 'asc', 
-        query: 'undefined', 
-        data: 'undefined', 
-        sortBy: 'pokemon'
+        query: '', 
+        data: [], 
+        sortBy: 'pokemon',
+        page: 1
     }
 
-    fetchData = async function(searchBy, query, sortBy, sortOrder) {
-        this.setState({ data: 'undefined' });
+    fetchData = async function() {
+        this.setState({ data: [] });
+        const {searchBy, query, sortOrder, sortBy, page} = this.state
         let url = 'https://pokedex-alchemy.herokuapp.com/api/pokedex';
-        if (this.state.query !== 'undefined') {
-            url += `?${searchBy}=${query}&sort=${sortBy}&direction=${sortOrder}`;
-        }
+        url += `?${searchBy}=${query}&sort=${sortBy}&direction=${sortOrder}&page=${page}`;
         let response = await fetch(url);
         let data = await response.json();
         this.setState({data: data});
@@ -27,29 +28,26 @@ class PokemonContainer extends Component {
         this.fetchData();
     }
 
-    handleChangeSortOrder = (e) => {
-        this.setState(
-            { sortOrder: e.target.value }
-        )
+    handleChange = (e, prop) => {
+        this.setState({ [prop]: e.target.value })
     }
 
-    handleChangeQuery = (e) => {
-        this.setState(
-            { query: e.target.value }
-        ) 
+    setPageFirst = () => {
+        this.setState({page: 1}, () => this.fetchData());
     }
 
-    handleSubmitSearchQuery = () => {
-        this.fetchData(this.state.searchBy, this.state.query, this.state.sortBy, this.state.sortOrder);    
+    setPageLast = (numPages) => {
+        this.setState({ page: numPages }, () => this.fetchData());
     }
 
-    handleChangeSortBy = (e) => {
-        this.setState({ sortBy: e.target.value })
+    nextPage = () => {
+        this.setState({ page: this.state.page + 1 }, () => this.fetchData());
     }
 
-    handleChangeSearchBy = (e) => {
-        this.setState({searchBy: e.target.value})
+    prevPage = () => {
+        this.setState({ page: this.state.page - 1 }, () => this.fetchData());
     }
+
 
     render () {
         return (
@@ -58,36 +56,47 @@ class PokemonContainer extends Component {
                     <section className="search">
                         <Search 
                             label='search'
-                            handleChange={this.handleChangeQuery}
-                            handleSubmit={this.handleSubmitSearchQuery}
+                            handleChange={(e) => this.handleChange(e, 'query')}
+                            handleSubmit={this.fetchData}
                         />
                     </section>
                     <section className="select-options">
                         <Dropdown 
-                            handleChange={this.handleChangeSortOrder}
+                            handleChange={(e) => this.handleChange(e, 'sortOrder')}
                             label='Sort order'
                             defaultValue='asc'
                             options={['asc', 'desc']}
                         />
                         <Dropdown
-                            handleChange={this.handleChangeSortBy}
+                            handleChange={(e) => this.handleChange(e, 'sortBy')}
                             label='sort by'
                             defaultValue='name'
                             options={['pokemon', 'type', 'shape', 'ability']}
                         />
                         <Dropdown 
-                            handleChange={this.handleChangeSearchBy}
+                            handleChange={(e) => this.handleChange(e, 'searchBy')}
                             label='search by'
                             defaultValue='pokemon'
                             options={['pokemon', 'type', 'ability']} 
                         />
                     </section>
                 </section>
-                {this.state.data !== 'undefined' &&
+                {this.state.data.length !== 0 &&
+                    <>
                     <PokeList 
                         results = {this.state.data.results}
-                    />}
-                {this.state.data === 'undefined' &&
+                    />
+                    <Paginator
+                        count={this.state.data.count}
+                        page={this.state.page}
+                        perPage={this.state.data.perPage}
+                        setPageFirst={this.setPageFirst}
+                        setPageLast={this.setPageLast}
+                        nextPage={this.nextPage}
+                        prevPage={this.prevPage}
+                    />
+                    </>}
+                {this.state.data.length === 0 &&
                     <img src='https://cdn.dribbble.com/users/621155/screenshots/2835314/simple_pokeball.gif' alt="pokeball loading spinner" />}
             </div>
         );
