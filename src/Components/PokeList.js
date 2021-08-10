@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PokeItem from './PokeItem';
+import { NavLink } from 'react-router-dom';
 
 class PokeList extends Component {
     render() {
@@ -8,11 +9,13 @@ class PokeList extends Component {
                 {
                     this.props.results.map(result => {
                         return (
-                        <PokeItem 
-                            key={result.id}
-                            pokemon={result.pokemon}
-                            img={result.url_image}
-                        />
+                            <NavLink to={`/pokemon/${result._id}`} key={result.id}>
+                                <PokeItem 
+                                    key={result.id}
+                                    pokemon={result.pokemon}
+                                    img={result.url_image}
+                                />
+                            </NavLink>
                         )
                     })
                 }
