@@ -20,14 +20,19 @@ class PokeDetail extends Component {
         const { data } = this.state;
 
         return (
-            <section>
-                {!this.state.data &&
+            <section className="poke-detail">
+                {!data &&
                     <img src='https://cdn.dribbble.com/users/621155/screenshots/2835314/simple_pokeball.gif' alt="pokeball loading spinner" />
                 }
-                {this.state.data &&
+                {data &&
                     <>
                     <h1>{data.pokemon}</h1>
                     <img src={data.url_image} alt="poke" />
+                    <p className="poke-detail-item">Ability 1: {data.ability_1}</p>
+                    <p className="poke-detail-item">Ability 2: {data.ability_2}</p>
+                    <p className="poke-detail-item">Attack: {data.attack}</p>
+                    <p className="poke-detail-item">Defense: {data.defense}</p>
+                    <p className="poke-detail-item">HP: {data.hp}</p>
                     </>}
             </section>
         )
