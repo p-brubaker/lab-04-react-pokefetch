@@ -21,7 +21,7 @@ class PokemonContainer extends Component {
         url += `?${searchBy}=${query}&sort=${sortBy}&direction=${sortOrder}&page=${page}`;
         let response = await fetch(url);
         let data = await response.json();
-        this.setState({data: data});
+        this.setState({data});
     }
 
     componentDidMount = () => {
@@ -44,7 +44,7 @@ class PokemonContainer extends Component {
                         <Search 
                             label='search'
                             handleChange={(e) => this.handleChange(e, 'query')}
-                            handleSubmit={this.fetchData}
+                            handleSubmit={() => this.fetchData()}
                         />
                     </section>
                     <section className="select-options">
