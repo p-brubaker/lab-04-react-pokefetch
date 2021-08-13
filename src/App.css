@@ -7,6 +7,19 @@ img {
   width: 100px;
 }
 
+a {
+  padding: 5px;
+  border: 1px solid grey;
+  color: grey;
+  border-radius: 2px;
+  text-decoration: none;
+}
+
+.is-current-page {
+  color: green;
+  border: 1px solid green;
+}
+
 .poke-item {
   display: flex;
   flex-direction: column;
