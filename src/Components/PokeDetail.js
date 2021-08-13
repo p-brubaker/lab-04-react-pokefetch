@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 class PokeDetail extends Component {
 
-    state = { data: false };
+    state = { data: {} };
 
     loadData = async () => {
         const {pokeId} = this.props.match.params;
@@ -21,10 +21,10 @@ class PokeDetail extends Component {
 
         return (
             <section className="poke-detail">
-                {!data &&
+                {!data._id &&
                     <img src='https://cdn.dribbble.com/users/621155/screenshots/2835314/simple_pokeball.gif' alt="pokeball loading spinner" />
                 }
-                {data &&
+                {data._id &&
                     <>
                     <h1>{data.pokemon}</h1>
                     <img src={data.url_image} alt="poke" />
